@@ -1,25 +1,30 @@
 .DEFAULT_GOAL := build
 
-GO ?= go
-GO_RUN_TOOLS ?= $(GO) run -modfile ./tools/go.mod
-GO_TEST = $(GO_RUN_TOOLS) gotest.tools/gotestsum --format pkgname
+# Go variables
+GO 					?= go
+GO_RELEASER 		?= goreleaser
+GO_TOOL 			?= $(GO) tool
+GO_TEST 			?= $(GO_TOOL) gotest.tools/gotestsum --format pkgname
 
+.PHONY: build
+build: ## Build the binary file.
+	$(GO_RELEASER) build --snapshot --clean
 
 .PHONY: generate
-generate:
-	go generate ./...
+generate: ## Generate code.
+	$(GO) generate ./...
+
+.PHONY: mocks
+mocks: ## Generate mocks.
+	$(GO_TOOL) github.com/vektra/mockery/v2
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.
-	go run mvdan.cc/gofumpt -w .
+	$(GO_TOOL) mvdan.cc/gofumpt -w .
 
 .PHONY: vet
 vet: ## Run go vet against code.
-	go vet ./...
-
-.PHONY: bench
-bench: ## Run benchmarks
-	go test -bench=. ./...
+	$(GO) vet ./...
 
 .PHONY: test
 test: fmt vet ## Run tests.
@@ -28,17 +33,14 @@ test: fmt vet ## Run tests.
 
 .PHONY: lint
 lint: ## Run lint.
-	$(GO_RUN_TOOLS) github.com/golangci/golangci-lint/cmd/golangci-lint run --timeout 5m -c .golangci.yml
+	$(GO_TOOL) github.com/golangci/golangci-lint/v2/cmd/golangci-lint run --timeout 5m -c .golangci.yml
 
 .PHONY: clean
 clean: ## Remove previous build.
-	find . -type f -name '*.gen.go' -exec rm {} +
-	git checkout go.mod
+	@rm -rf .test .dist
+	@find . -type f -name '*.gen.go' -exec rm {} +
+	@git checkout go.mod
 
-.PHONY: run-kafka
-run-kafka:
-	@docker run -d --rm  -p 2181:2181 -p 9092:9092 --name some-kafka --env ADVERTISED_HOST=127.0.0.1 --env ADVERTISED_PORT=9092 spotify/kafka
-
-.PHONY: stop-kafka
-stop-kafka:
-	@docker stop some-kafka
+.PHONY: help
+help: ## Display this help screen.
+	@grep -E '^[a-z.A-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
