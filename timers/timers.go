@@ -94,7 +94,7 @@ func (t *Timers) clear(id int32) {
 }
 
 func (t *Timers) startNewTimer(this v8.Valuer, args []*v8.Value) (int32, error) {
-	if len(args) <= 0 {
+	if len(args) == 0 {
 		return 0, fmt.Errorf("1 argument required, but only 0 present")
 	}
 

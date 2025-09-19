@@ -2,6 +2,7 @@ package listener
 
 import (
 	"fmt"
+	"log"
 
 	v8 "github.com/katallaxie/v8go"
 )
@@ -77,7 +78,7 @@ func (l *Listener) GetFunctionCallback() v8.FunctionCallback {
 			for e := range chn {
 				v, err := fn.Call(ctx.Global(), e)
 				if err != nil {
-					fmt.Printf("addListener: %v", err)
+					log.Printf("listener: %v", err)
 				}
 
 				l.out[args[0].String()] <- v

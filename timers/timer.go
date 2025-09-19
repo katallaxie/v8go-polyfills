@@ -20,7 +20,7 @@ type Timer struct {
 type CallbackFunction func()
 
 // NewTimer ...
-func NewTimer(id int32, delay int32, cb CallbackFunction) *Timer {
+func NewTimer(id, delay int32, cb CallbackFunction) *Timer {
 	return &Timer{
 		ID:    id,
 		Delay: delay,

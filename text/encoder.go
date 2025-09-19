@@ -18,12 +18,12 @@ func NewDecoder() *Decoder {
 
 // GetDecodeFunctionCallback ...
 func (d *Decoder) GetDecodeFunctionCallback() v8.FunctionCallback {
-	return func(info *v8.FunctionCallbackInfo) *v8.Value {
+	return func(_ *v8.FunctionCallbackInfo) *v8.Value {
 		return nil
 	}
 }
 
 // Inject ...
-func (d *Decoder) Inject(iso *v8.Isolate, global *v8.ObjectTemplate) error {
+func (d *Decoder) Inject(_ *v8.Isolate, _ *v8.ObjectTemplate) error {
 	return nil
 }

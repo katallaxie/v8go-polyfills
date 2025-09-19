@@ -11,9 +11,8 @@ type Option func(*Module)
 
 // Module ...
 type Module struct {
-	ModulePath string
-
 	utils.Injector
+	ModulePath string
 }
 
 // New ...
@@ -35,6 +34,6 @@ func WithModulePath(path string) Option {
 }
 
 // Inject ...
-func (m *Module) Inject(iso *v8.Isolate, global *v8.ObjectTemplate) error {
+func (m *Module) Inject(_ *v8.Isolate, _ *v8.ObjectTemplate) error {
 	return nil
 }

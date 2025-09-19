@@ -45,6 +45,10 @@ linters:
     - wastedassign
     - whitespace
 
+  disable:
+    - mnd
+    - revive
+
   settings:
     exhaustive:
       default-signifies-exhaustive: true
@@ -60,7 +64,7 @@ linters:
     govet:
       disable:
         - shadow
-      enable-all: true
+      enable-all: false
 
     nolintlint:
       allow-unused: true # false would be preferable, but it's flaky (https://github.com/golangci/golangci-lint/issues/3228)

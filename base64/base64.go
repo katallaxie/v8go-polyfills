@@ -25,7 +25,7 @@ func (b *Base64) GetBtoaFunctionCallback() v8.FunctionCallback {
 		args := info.Args()
 		ctx := info.Context()
 
-		if len(args) <= 0 {
+		if len(args) == 0 {
 			return nil
 		}
 
@@ -45,7 +45,7 @@ func (b *Base64) GetAtobFunctionCallback() v8.FunctionCallback {
 		args := info.Args()
 		ctx := info.Context()
 
-		if len(args) <= 0 {
+		if len(args) == 0 {
 			return nil
 		}
 
