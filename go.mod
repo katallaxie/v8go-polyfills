@@ -11,7 +11,7 @@ tool (
 )
 
 require (
-	github.com/katallaxie/v8go v0.8.0
+	github.com/katallaxie/v8go v0.0.0-20250919061715-3c3a8274d8fa
 	github.com/stretchr/testify v1.11.1
 )
 
@@ -306,6 +306,12 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/julz/importas v0.2.0 // indirect
 	github.com/karamaru-alpha/copyloopvar v1.2.1 // indirect
+	github.com/katallaxie/v8go/deps/android_amd64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
+	github.com/katallaxie/v8go/deps/android_arm64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
+	github.com/katallaxie/v8go/deps/darwin_amd64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
+	github.com/katallaxie/v8go/deps/darwin_arm64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
+	github.com/katallaxie/v8go/deps/linux_amd64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
+	github.com/katallaxie/v8go/deps/linux_arm64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/kisielk/errcheck v1.9.0 // indirect
 	github.com/kkHAIKE/contextcheck v1.1.6 // indirect
