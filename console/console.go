@@ -6,52 +6,36 @@ import (
 	"io"
 	"os"
 
-	"github.com/katallaxie/v8go-polyfills/runtime"
-
 	v8 "github.com/katallaxie/v8go"
 )
 
-var _ runtime.Polyfill = (*Console)(nil)
-
-// Opt ...
+// Opt is a functional option for configuring the Console.
 type Opt func(*Console)
 
-// WithOutput ...
+// WithOutput is an Opt that sets the output writer for the Console.
 func WithOutput(output io.Writer) Opt {
 	return func(c *Console) {
 		c.out = output
 	}
 }
 
-// New ...
-func New(opt ...Opt) *Console {
-	c := new(Console)
-	c.out = os.Stdout
-
-	for _, o := range opt {
-		o(c)
-	}
-
-	return c
-}
-
-// Console ...
+// Console is a polyfill for the console object.
 type Console struct {
 	out io.Writer
 }
 
-// GetMethodName ...
+// GetMethodName returns the method name.
 func (c *Console) GetMethodName() string {
 	return "log"
 }
 
-// AddTo ...
-func AddTo(ctx *v8.Context, opt ...Opt) error {
+// Add ...
+func Add(ctx *v8.Context, opts ...Opt) error {
 	if ctx == nil {
 		return errors.New("v8-polyfills/console: ctx is required")
 	}
 
-	c := New(opt...)
+	c := New(opts...)
 
 	iso := ctx.Isolate()
 	con := v8.NewObjectTemplate(iso)
@@ -74,6 +58,18 @@ func AddTo(ctx *v8.Context, opt ...Opt) error {
 	}
 
 	return nil
+}
+
+// New ...
+func New(opt ...Opt) *Console {
+	c := new(Console)
+	c.out = os.Stdout
+
+	for _, o := range opt {
+		o(c)
+	}
+
+	return c
 }
 
 // GetFunctionCallback ...

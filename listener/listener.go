@@ -90,23 +90,35 @@ func (l *Listener) GetFunctionCallback() v8.FunctionCallback {
 			return newErrorValue(ctx, err)
 		}
 
+		rchn, ok := chn.(chan *v8.Object)
+		if !ok {
+			err := fmt.Errorf("listeners: event %s is not a channel", args[0].String())
+
+			return newErrorValue(ctx, err)
+		}
+
 		go func(chn chan *v8.Object, fn *v8.Function) {
 			for e := range chn {
 				v, err := fn.Call(ctx.Global(), e)
 				if err != nil {
-					fmt.Printf("listeners: %v", err)
+					fmt.Printf("listeners: %v", err) //nolint:forbidigo
 				}
 
 				out, ok := l.out.Load(conv.String(args[0]))
 				if !ok {
-					fmt.Println("listeners: out channel not found")
+					fmt.Println("listeners: out channel not found") //nolint:forbidigo
 				}
 
-				out.(chan *v8.Value) <- v
-			}
-		}(chn.(chan *v8.Object), fn)
+				vchn, ok := out.(chan *v8.Value)
+				if !ok {
+					return
+				}
 
-		return v8.Undefined(ctx.Isolate())
+				vchn <- v
+			}
+		}(rchn, fn)
+
+		return v8.Undefined(ctx.Isolate()) //nolint:for
 	}
 }
 
