@@ -1,15 +1,71 @@
-package listener_test
+package listeners_test
 
 import (
+	"fmt"
 	"testing"
 
-	"github.com/katallaxie/v8go-polyfills/console"
-	"github.com/katallaxie/v8go-polyfills/listener"
-
-	"github.com/stretchr/testify/assert"
+	listeners "github.com/katallaxie/v8go-polyfills/listener"
 
 	v8 "github.com/katallaxie/v8go"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
+
+func ExampleAdd() {
+	iso := v8.NewIsolate()
+	global := v8.NewObjectTemplate(iso)
+
+	in := make(chan *v8.Object)
+	out := make(chan *v8.Value)
+
+	err := listeners.Add(iso, global, listeners.WithEvents("auth", in, out))
+	if err != nil {
+		panic(err)
+	}
+
+	ctx := v8.NewContext(iso, global)
+
+	_, err = ctx.RunScript("addEventListener('auth', event => { return event.sourceIP === '127.0.0.1' })", "listener.js")
+	if err != nil {
+		panic(err)
+	}
+
+	obj, err := newContextObject(ctx)
+	if err != nil {
+		panic(err)
+	}
+
+	in <- obj
+	v := <-out
+
+	fmt.Println(v)
+	// Output: true
+}
+
+func TestAdd(t *testing.T) {
+	iso := v8.NewIsolate()
+	global := v8.NewObjectTemplate(iso)
+
+	in := make(chan *v8.Object)
+	out := make(chan *v8.Value)
+
+	err := listeners.Add(iso, global, listeners.WithEvents("auth", in, out))
+	require.NoError(t, err)
+
+	ctx := v8.NewContext(iso, global)
+
+	_, err = ctx.RunScript("addEventListener('auth', event => { return event.sourceIP === '127.0.0.1' })", "listener.js")
+	require.NoError(t, err)
+
+	obj, err := newContextObject(ctx)
+	require.NoError(t, err)
+
+	in <- obj
+	v := <-out
+
+	assert.NotNil(t, v)
+	assert.True(t, v.IsBoolean())
+}
 
 func BenchmarkEventListenerCall(b *testing.B) {
 	iso := v8.NewIsolate()
@@ -18,17 +74,12 @@ func BenchmarkEventListenerCall(b *testing.B) {
 	in := make(chan *v8.Object)
 	out := make(chan *v8.Value)
 
-	l := listener.New()
-	err := l.Inject(iso, global)
-	assert.NoError(b, err)
+	err := listeners.Add(iso, global, listeners.WithEvents("auth", in, out))
+	require.NoError(b, err)
 
 	ctx := v8.NewContext(iso, global)
 
-	if err := console.AddTo(ctx); err != nil {
-		panic(err)
-	}
-
-	_, err = ctx.RunScript("addListener('auth', event => { return event.sourceIP === '127.0.0.1' })", "listener.js")
+	_, err = ctx.RunScript("addEventListener('auth', event => { return event.sourceIP === '127.0.0.1' })", "listener.js")
 	if err != nil {
 		panic(err)
 	}
@@ -37,7 +88,7 @@ func BenchmarkEventListenerCall(b *testing.B) {
 
 	for n := 0; n < b.N; n++ {
 		obj, err := newContextObject(ctx)
-		assert.NoError(b, err)
+		require.NoError(b, err)
 		in <- obj
 
 		v := <-out

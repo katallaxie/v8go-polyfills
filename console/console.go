@@ -6,27 +6,47 @@ import (
 	"io"
 	"os"
 
+	"github.com/katallaxie/v8go-polyfills/runtime"
+
 	v8 "github.com/katallaxie/v8go"
 )
 
-// Option ...
-type Option func(*Console)
+var _ runtime.Polyfill = (*Console)(nil)
+
+// Opt ...
+type Opt func(*Console)
 
 // WithOutput ...
-func WithOutput(output io.Writer) Option {
+func WithOutput(output io.Writer) Opt {
 	return func(c *Console) {
 		c.out = output
 	}
 }
 
+// New ...
+func New(opt ...Opt) *Console {
+	c := new(Console)
+	c.out = os.Stdout
+
+	for _, o := range opt {
+		o(c)
+	}
+
+	return c
+}
+
 // Console ...
 type Console struct {
-	out        io.Writer
-	methodName string
+	out io.Writer
+}
+
+// GetMethodName ...
+func (c *Console) GetMethodName() string {
+	return "log"
 }
 
 // AddTo ...
-func AddTo(ctx *v8.Context, opt ...Option) error {
+func AddTo(ctx *v8.Context, opt ...Opt) error {
 	if ctx == nil {
 		return errors.New("v8-polyfills/console: ctx is required")
 	}
@@ -38,7 +58,7 @@ func AddTo(ctx *v8.Context, opt ...Option) error {
 
 	logFn := v8.NewFunctionTemplate(iso, c.GetFunctionCallback())
 
-	if err := con.Set(c.methodName, logFn, v8.ReadOnly); err != nil {
+	if err := con.Set(c.GetMethodName(), logFn, v8.ReadOnly); err != nil {
 		return fmt.Errorf("v8-polyfills/console: %w", err)
 	}
 
@@ -54,20 +74,6 @@ func AddTo(ctx *v8.Context, opt ...Option) error {
 	}
 
 	return nil
-}
-
-// New ...
-func New(opt ...Option) *Console {
-	c := new(Console)
-
-	c.out = os.Stdout
-	c.methodName = "log"
-
-	for _, o := range opt {
-		o(c)
-	}
-
-	return c
 }
 
 // GetFunctionCallback ...
