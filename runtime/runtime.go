@@ -2,6 +2,7 @@ package runtime
 
 import (
 	v8 "github.com/katallaxie/v8go"
+	"github.com/katallaxie/v8go-polyfills/console"
 )
 
 // Polyfill is an interface that represents a polyfill.
@@ -19,7 +20,7 @@ type CompatibilityDate string
 type CompatibilityFlag string
 
 // CompatibilityFlags is a map of compatibility flags.
-type CompatibilityFlags map[CompatibilityFlag]bool
+type CompatibilityFlags map[CompatibilityFlag]Builder
 
 // CompatibilityMatrix is a map of compatibility dates.
 type CompatibilityMatrix map[CompatibilityDate]CompatibilityFlags
@@ -27,7 +28,15 @@ type CompatibilityMatrix map[CompatibilityDate]CompatibilityFlags
 // Compatibility is a map of compatibility matrices.
 var Compatibility = CompatibilityMatrix{
 	"2024-10-01": {
-		"console":          true,
-		"addEventListener": true,
+		"console":          console.Build,
+		"addEventListener": Unimplemented,
 	},
+}
+
+// Builder is a function that builds a polyfill.
+type Builder func(ctx *v8.Context, iso *v8.Isolate) error
+
+// Unimplemented is a placeholder for unimplemented polyfills.
+func Unimplemented(ctx *v8.Context, iso *v8.Isolate) error {
+	return nil
 }

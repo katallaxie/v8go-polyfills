@@ -29,6 +29,37 @@ func (c *Console) GetMethodName() string {
 	return "log"
 }
 
+// Build ...
+func Build(ctx *v8.Context, _ *v8.Isolate) error {
+	if ctx == nil {
+		return errors.New("v8-polyfills/console: ctx is required")
+	}
+
+	c := New(WithOutput(os.Stdout))
+
+	iso := ctx.Isolate()
+	con := v8.NewObjectTemplate(iso)
+
+	logFn := v8.NewFunctionTemplate(iso, c.GetFunctionCallback())
+
+	if err := con.Set(c.GetMethodName(), logFn, v8.ReadOnly); err != nil {
+		return fmt.Errorf("v8-polyfills/console: %w", err)
+	}
+
+	conObj, err := con.NewInstance(ctx)
+	if err != nil {
+		return fmt.Errorf("v8-polyfills/console: %w", err)
+	}
+
+	global := ctx.Global()
+
+	if err := global.Set("console", conObj); err != nil {
+		return fmt.Errorf("v8-polyfills/console: %w", err)
+	}
+
+	return nil
+}
+
 // Add ...
 func Add(ctx *v8.Context, opts ...Opt) error {
 	if ctx == nil {
