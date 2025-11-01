@@ -5,6 +5,7 @@ GO 					?= go
 GO_RELEASER 		?= $(GO_TOOL) github.com/goreleaser/goreleaser
 GO_TOOL 			?= $(GO) tool
 GO_TEST 			?= $(GO_TOOL) gotest.tools/gotestsum --format pkgname
+GO_BENCHSTAT 		?= $(GO_TOOL) golang.org/x/perf/cmd/benchstat
 
 .PHONY: build
 build: ## Build the binary file.
@@ -17,6 +18,10 @@ generate: ## Generate code.
 .PHONY: mocks
 mocks: ## Generate mocks.
 	$(GO_TOOL) github.com/vektra/mockery/v2
+
+.PHONY: bench
+bench: fmt vet ## Run benchmarks.
+	$(GO)  test -v ./... -bench=. -benchmem | $(GO_BENCHSTAT) -
 
 .PHONY: fmt
 fmt: ## Run go fmt against code.

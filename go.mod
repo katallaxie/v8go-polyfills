@@ -6,13 +6,14 @@ tool (
 	github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 	github.com/goreleaser/goreleaser/v2
 	github.com/vektra/mockery/v2
+	golang.org/x/perf/cmd/benchstat
 	gotest.tools/gotestsum
 	mvdan.cc/gofumpt
 )
 
 require (
 	github.com/katallaxie/pkg v0.7.9
-	github.com/katallaxie/v8go v0.0.0-20250919061715-3c3a8274d8fa
+	github.com/katallaxie/v8go v0.8.1-0.20251031220500-cc8a8a37f17d
 	github.com/stretchr/testify v1.11.1
 )
 
@@ -71,6 +72,7 @@ require (
 	github.com/Microsoft/go-winio v0.6.2 // indirect
 	github.com/OpenPeeDeeP/depguard/v2 v2.2.1 // indirect
 	github.com/ProtonMail/go-crypto v1.3.0 // indirect
+	github.com/aclements/go-moremath v0.0.0-20210112150236-f10218a38794 // indirect
 	github.com/agnivade/levenshtein v1.2.1 // indirect
 	github.com/alecthomas/chroma/v2 v2.20.0 // indirect
 	github.com/alecthomas/go-check-sumtype v0.3.1 // indirect
@@ -307,12 +309,12 @@ require (
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/julz/importas v0.2.0 // indirect
 	github.com/karamaru-alpha/copyloopvar v1.2.1 // indirect
-	github.com/katallaxie/v8go/deps/android_amd64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
-	github.com/katallaxie/v8go/deps/android_arm64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
-	github.com/katallaxie/v8go/deps/darwin_amd64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
-	github.com/katallaxie/v8go/deps/darwin_arm64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
-	github.com/katallaxie/v8go/deps/linux_amd64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
-	github.com/katallaxie/v8go/deps/linux_arm64 v0.0.0-20250919061715-3c3a8274d8fa // indirect
+	github.com/katallaxie/v8go/deps/android_amd64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
+	github.com/katallaxie/v8go/deps/android_arm64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
+	github.com/katallaxie/v8go/deps/darwin_amd64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
+	github.com/katallaxie/v8go/deps/darwin_arm64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
+	github.com/katallaxie/v8go/deps/linux_amd64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
+	github.com/katallaxie/v8go/deps/linux_arm64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/kisielk/errcheck v1.9.0 // indirect
 	github.com/kkHAIKE/contextcheck v1.1.6 // indirect
@@ -490,16 +492,17 @@ require (
 	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.2 // indirect
 	gocloud.dev v0.42.0 // indirect
-	golang.org/x/crypto v0.42.0 // indirect
-	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect
+	golang.org/x/crypto v0.43.0 // indirect
+	golang.org/x/exp v0.0.0-20251002181428-27f1f14c8bb9 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20250620022241-b7579e27df2b // indirect
 	golang.org/x/mod v0.28.0 // indirect
-	golang.org/x/net v0.44.0 // indirect
-	golang.org/x/oauth2 v0.31.0 // indirect
+	golang.org/x/net v0.46.0 // indirect
+	golang.org/x/oauth2 v0.32.0 // indirect
+	golang.org/x/perf v0.0.0-20251023143056-3684bd442cc8 // indirect
 	golang.org/x/sync v0.17.0 // indirect
-	golang.org/x/sys v0.36.0 // indirect
-	golang.org/x/term v0.35.0 // indirect
-	golang.org/x/text v0.29.0 // indirect
+	golang.org/x/sys v0.37.0 // indirect
+	golang.org/x/term v0.36.0 // indirect
+	golang.org/x/text v0.30.0 // indirect
 	golang.org/x/time v0.12.0 // indirect
 	golang.org/x/tools v0.37.0 // indirect
 	golang.org/x/xerrors v0.0.0-20240903120638-7835f813f4da // indirect

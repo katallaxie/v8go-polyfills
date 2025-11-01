@@ -20,7 +20,7 @@ type CompatibilityDate string
 type CompatibilityFlag string
 
 // CompatibilityFlags is a map of compatibility flags.
-type CompatibilityFlags map[CompatibilityFlag]Builder
+type CompatibilityFlags map[CompatibilityFlag]Injector
 
 // CompatibilityMatrix is a map of compatibility dates.
 type CompatibilityMatrix map[CompatibilityDate]CompatibilityFlags
@@ -33,8 +33,8 @@ var Compatibility = CompatibilityMatrix{
 	},
 }
 
-// Builder is a function that builds a polyfill.
-type Builder func(ctx *v8.Context, iso *v8.Isolate) error
+// Injector is a function that builds a polyfill.
+type Injector func(ctx *v8.Context, iso *v8.Isolate) error
 
 // Unimplemented is a placeholder for unimplemented polyfills.
 func Unimplemented(ctx *v8.Context, iso *v8.Isolate) error {
