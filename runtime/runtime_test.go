@@ -6,6 +6,7 @@ import (
 	"github.com/katallaxie/v8go-polyfills/runtime"
 
 	v8 "github.com/katallaxie/v8go"
+	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -18,7 +19,7 @@ func Test2024_10_01(t *testing.T) {
 	build := runtime.Compatibility["2024-10-01"]
 
 	for _, builder := range build {
-		err := builder(ctx, iso)
+		err := builder(ctx, iso, global)
 		require.NoError(t, err)
 	}
 
@@ -41,10 +42,8 @@ func Benchmark2024_10_01(b *testing.B) {
 		build := runtime.Compatibility["2024-10-01"]
 
 		for _, builder := range build {
-			err := builder(ctx, iso)
-			if err != nil {
-				b.Fatal(err)
-			}
+			err := builder(ctx, iso, global)
+			assert.NoError(b, err)
 		}
 
 		_, err := ctx.RunScript("console.log('hello world')", "console.js")

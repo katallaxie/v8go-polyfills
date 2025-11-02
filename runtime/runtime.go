@@ -2,6 +2,7 @@ package runtime
 
 import (
 	v8 "github.com/katallaxie/v8go"
+	"github.com/katallaxie/v8go-polyfills/base64"
 	"github.com/katallaxie/v8go-polyfills/console"
 )
 
@@ -28,15 +29,16 @@ type CompatibilityMatrix map[CompatibilityDate]CompatibilityFlags
 // Compatibility is a map of compatibility matrices.
 var Compatibility = CompatibilityMatrix{
 	"2024-10-01": {
-		"console":          console.Build,
 		"addEventListener": Unimplemented,
+		"base64":           base64.Inject,
+		"console":          console.Inject,
 	},
 }
 
 // Injector is a function that builds a polyfill.
-type Injector func(ctx *v8.Context, iso *v8.Isolate) error
+type Injector func(ctx *v8.Context, iso *v8.Isolate, global *v8.ObjectTemplate) error
 
 // Unimplemented is a placeholder for unimplemented polyfills.
-func Unimplemented(ctx *v8.Context, iso *v8.Isolate) error {
+func Unimplemented(ctx *v8.Context, iso *v8.Isolate, global *v8.ObjectTemplate) error {
 	return nil
 }

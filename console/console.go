@@ -29,8 +29,8 @@ func (c *Console) GetMethodName() string {
 	return "log"
 }
 
-// Build ...
-func Build(ctx *v8.Context, _ *v8.Isolate) error {
+// Inject ...
+func Inject(ctx *v8.Context, _ *v8.Isolate, _ *v8.ObjectTemplate) error {
 	if ctx == nil {
 		return errors.New("v8-polyfills/console: ctx is required")
 	}

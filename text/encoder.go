@@ -1,15 +1,11 @@
 package text
 
 import (
-	"github.com/katallaxie/v8go-polyfills/utils"
-
 	v8 "github.com/katallaxie/v8go"
 )
 
 // Decoder ...
-type Decoder struct {
-	utils.Injector
-}
+type Decoder struct{}
 
 // NewDecoder ...
 func NewDecoder() *Decoder {

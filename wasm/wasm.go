@@ -1,8 +1,6 @@
 package wasm
 
 import (
-	"github.com/katallaxie/v8go-polyfills/utils"
-
 	v8 "github.com/katallaxie/v8go"
 )
 
@@ -11,7 +9,6 @@ type Option func(*Module)
 
 // Module ...
 type Module struct {
-	utils.Injector
 	ModulePath string
 }
 

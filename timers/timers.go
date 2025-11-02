@@ -15,7 +15,6 @@ type Timers struct {
 	nextTimeoutID int32
 
 	sync.RWMutex
-	utils.Injector
 }
 
 // New ...

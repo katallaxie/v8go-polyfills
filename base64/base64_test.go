@@ -34,9 +34,9 @@ func newV8goContext() (*v8.Context, error) {
 	iso := v8.NewIsolate()
 	global := v8.NewObjectTemplate(iso)
 
-	b := New()
+	ctx := v8.NewContext(iso, global)
 
-	if err := b.Inject(iso, global); err != nil {
+	if err := Inject(ctx, iso, global); err != nil {
 		return nil, err
 	}
 
