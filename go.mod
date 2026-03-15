@@ -13,7 +13,7 @@ tool (
 
 require (
 	github.com/katallaxie/pkg v0.7.9
-	github.com/katallaxie/v8go v0.8.1-0.20251031220500-cc8a8a37f17d
+	github.com/katallaxie/v8go v1.0.1
 	github.com/stretchr/testify v1.11.1
 )
 
@@ -311,10 +311,10 @@ require (
 	github.com/karamaru-alpha/copyloopvar v1.2.1 // indirect
 	github.com/katallaxie/v8go/deps/android_amd64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
 	github.com/katallaxie/v8go/deps/android_arm64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
-	github.com/katallaxie/v8go/deps/darwin_amd64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
-	github.com/katallaxie/v8go/deps/darwin_arm64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
-	github.com/katallaxie/v8go/deps/linux_amd64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
-	github.com/katallaxie/v8go/deps/linux_arm64 v0.0.0-20251031220500-cc8a8a37f17d // indirect
+	github.com/katallaxie/v8go/deps/darwin_amd64 v0.0.0-20260315151123-d0268b3f2f32 // indirect
+	github.com/katallaxie/v8go/deps/darwin_arm64 v0.0.0-20260315151123-d0268b3f2f32 // indirect
+	github.com/katallaxie/v8go/deps/linux_amd64 v0.0.0-20260315151123-d0268b3f2f32 // indirect
+	github.com/katallaxie/v8go/deps/linux_arm64 v0.0.0-20260315151123-d0268b3f2f32 // indirect
 	github.com/kevinburke/ssh_config v1.2.0 // indirect
 	github.com/kisielk/errcheck v1.9.0 // indirect
 	github.com/kkHAIKE/contextcheck v1.1.6 // indirect
