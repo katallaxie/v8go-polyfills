@@ -1,7 +1,7 @@
 package console_test
 
 import (
-	"os"
+	"bytes"
 	"testing"
 
 	"github.com/katallaxie/v8go-polyfills/console"
@@ -16,11 +16,13 @@ func TestAdd(t *testing.T) {
 
 	ctx := v8.NewContext(iso, global)
 
-	err := console.Add(ctx, console.WithOutput(os.Stdout))
+	var buf bytes.Buffer
+	err := console.Add(ctx, console.WithOutput(&buf))
 	require.NoError(t, err)
 
 	defer ctx.Close()
 
 	_, err = ctx.RunScript("console.log('hello world')", "console.js")
 	require.NoError(t, err)
+	require.Equal(t, "hello world\n", buf.String())
 }
