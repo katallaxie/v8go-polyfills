@@ -7,52 +7,16 @@ import (
 	"github.com/katallaxie/v8go-polyfills/runtime"
 
 	"github.com/katallaxie/pkg/conv"
-	"github.com/katallaxie/pkg/logx"
-	"github.com/katallaxie/pkg/utilx"
 	v8 "github.com/katallaxie/v8go"
 )
 
 var _ runtime.Polyfill = (*Listener)(nil)
 
-// Error ...
-type Error struct {
-	// Message is the error message.
-	Message string
-}
-
-// Error implements the error interface.
-func (e *Error) Error() string {
-	return fmt.Sprintf("v8-polyfills/listener: %s", e.Message)
-}
-
-// NewDefaultError ...
-func NewDefaultError() *Error {
-	return &Error{Message: "an error occurred while calling the event listener"}
-}
-
-// NewError ...
-func NewError(message string) *Error {
-	return &Error{Message: message}
-}
-
-// NewErrorIsolateRequired ...
-func NewErrorIsolateRequired() *Error {
-	return &Error{Message: "isolate is required"}
-}
-
 // Opt is a functional option for configuring the listener.
 type Opt func(*Listener)
 
-// WithLogger ...
-func WithLogger(l logx.Logger) Opt {
-	return func(c *Listener) {
-		c.log = l
-	}
-}
-
 // Listener is a polyfill for the addEventListener method.
 type Listener struct {
-	log logx.Logger
 	in  sync.Map
 	out sync.Map
 }
@@ -65,7 +29,6 @@ func (l *Listener) GetMethodName() string {
 // New ...
 func New(opt ...Opt) *Listener {
 	c := new(Listener)
-	c.log = logx.LogSink
 	c.in = sync.Map{}
 	c.out = sync.Map{}
 
@@ -86,8 +49,8 @@ func WithEvents(name string, in chan *v8.Object, out chan *v8.Value) Opt {
 
 // Add ...
 func Add(iso *v8.Isolate, global *v8.ObjectTemplate, opts ...Opt) error {
-	if utilx.IsNil(iso) {
-		return NewErrorIsolateRequired()
+	if iso == nil {
+		return fmt.Errorf("v8-polyfills/listeners: isolate is required")
 	}
 
 	l := New(opts...)
@@ -95,7 +58,7 @@ func Add(iso *v8.Isolate, global *v8.ObjectTemplate, opts ...Opt) error {
 	ctxFn := v8.NewFunctionTemplate(iso, l.GetFunctionCallback())
 
 	if err := global.Set(l.GetMethodName(), ctxFn, v8.ReadOnly); err != nil {
-		return NewError(err.Error())
+		return fmt.Errorf("v8-polyfills/listener: %w", err)
 	}
 
 	return nil
@@ -108,28 +71,28 @@ func (l *Listener) GetFunctionCallback() v8.FunctionCallback {
 		args := info.Args()
 
 		if len(args) <= 1 {
-			err := NewError(fmt.Sprintf("expected 2 arguments, got %d", len(args)))
+			err := fmt.Errorf("listeners: expected 2 arguments, got %d", len(args))
 
 			return newErrorValue(ctx, err)
 		}
 
 		fn, err := args[1].AsFunction()
 		if err != nil {
-			err := NewError(fmt.Sprintf("v8-polyfills/listener: %v", err))
+			err := fmt.Errorf("%w", err)
 
 			return newErrorValue(ctx, err)
 		}
 
 		chn, ok := l.in.Load(conv.String(args[0]))
 		if !ok {
-			err := NewError(fmt.Sprintf("v8-polyfills/listener: event %s not found", args[0].String()))
+			err := fmt.Errorf("listeners: event %s not found", args[0].String())
 
 			return newErrorValue(ctx, err)
 		}
 
 		rchn, ok := chn.(chan *v8.Object)
 		if !ok {
-			err := NewError(fmt.Sprintf("v8-polyfills/listener: event %s is not a channel", args[0].String()))
+			err := fmt.Errorf("listeners: event %s is not a channel", args[0].String())
 
 			return newErrorValue(ctx, err)
 		}
@@ -138,12 +101,12 @@ func (l *Listener) GetFunctionCallback() v8.FunctionCallback {
 			for e := range chn {
 				v, err := fn.Call(ctx.Global(), e)
 				if err != nil {
-					l.log.Errorf("v8-polyfills/listener: %v", err)
+					fmt.Printf("listeners: %v", err) //nolint:forbidigo
 				}
 
 				out, ok := l.out.Load(conv.String(args[0]))
 				if !ok {
-					l.log.Errorf("v8-polyfills/listener: out channel not found")
+					fmt.Println("listeners: out channel not found") //nolint:forbidigo
 				}
 
 				vchn, ok := out.(chan *v8.Value)

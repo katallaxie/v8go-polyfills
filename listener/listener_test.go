@@ -69,6 +69,8 @@ func TestAdd(t *testing.T) {
 
 func BenchmarkEventListenerCall(b *testing.B) {
 	iso := v8.NewIsolate()
+	defer iso.Dispose()
+
 	global := v8.NewObjectTemplate(iso)
 
 	in := make(chan *v8.Object)
@@ -78,6 +80,7 @@ func BenchmarkEventListenerCall(b *testing.B) {
 	require.NoError(b, err)
 
 	ctx := v8.NewContext(iso, global)
+	defer ctx.Close()
 
 	_, err = ctx.RunScript("addEventListener('auth', event => { return event.sourceIP === '127.0.0.1' })", "listener.js")
 	if err != nil {
