@@ -13,7 +13,7 @@ tool (
 
 require (
 	github.com/katallaxie/pkg v0.7.11
-	github.com/katallaxie/v8go v1.0.1
+	github.com/katallaxie/v8go v1.0.3
 	github.com/stretchr/testify v1.11.1
 )
 

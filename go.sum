@@ -818,8 +818,8 @@ github.com/karamaru-alpha/copyloopvar v1.2.1 h1:wmZaZYIjnJ0b5UoKDjUHrikcV0zuPyyx
 github.com/karamaru-alpha/copyloopvar v1.2.1/go.mod h1:nFmMlFNlClC2BPvNaHMdkirmTJxVCY0lhxBtlfOypMM=
 github.com/katallaxie/pkg v0.7.11 h1:ut1xLtIzpqCgf8an9O9j7tOGl5zpfmr9jDPSt7pzlhU=
 github.com/katallaxie/pkg v0.7.11/go.mod h1:2uGQSWxhg+5C/wSmCtW0M9v6OsVq/lNJ6velCtuAvdU=
-github.com/katallaxie/v8go v1.0.1 h1:OLBaImSv/AjfzDlW3GUTglSC9SbSTu6R7vcRXRVJlsE=
-github.com/katallaxie/v8go v1.0.1/go.mod h1:0tx1336Vqk2B7fZ1DnRYfwYRgyhUs2/fJHb2bomiR6s=
+github.com/katallaxie/v8go v1.0.3 h1:KSgXjGhNBwT1Btyy0RD92GzAO326wdrycnHBsJSZahg=
+github.com/katallaxie/v8go v1.0.3/go.mod h1:0tx1336Vqk2B7fZ1DnRYfwYRgyhUs2/fJHb2bomiR6s=
 github.com/katallaxie/v8go/deps/darwin_amd64 v0.0.0-20260315151123-d0268b3f2f32 h1:6gtpB6FK056l9+HUGN0e8dWJS+m2SM9rUDnmPvwaE+k=
 github.com/katallaxie/v8go/deps/darwin_amd64 v0.0.0-20260315151123-d0268b3f2f32/go.mod h1:3VE4SOtJQw9Scic9Es1LzAMaj/f/WxFHywm+uGL1Z7U=
 github.com/katallaxie/v8go/deps/darwin_arm64 v0.0.0-20260315151123-d0268b3f2f32 h1:XPZl3wNQrII7HB6mrIhg1tLAQqU1/KJFJJZWAVra0bw=
